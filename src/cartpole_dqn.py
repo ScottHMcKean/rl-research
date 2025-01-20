@@ -98,9 +98,17 @@ def train():
         # Log every 25 episodes
         if (episode + 1) % 25 == 0:
             current_time = time.time()
-            eps = 25 / (current_time - start_time - last_episode_checkpoint)
+            recent_eps = 25 / (current_time - start_time - last_episode_checkpoint)
+            total_eps = (episode + 1) / (current_time - start_time)
             last_episode_checkpoint = current_time - start_time
-            print(f"Episode {episode + 1}, Total Reward: {total_reward}, Epsilon: {epsilon:.3f}, EPS: {eps:.2f}")
+            print(f"Episode {episode + 1}, Total Reward: {total_reward}, Epsilon: {epsilon:.3f}, "
+                  f"Recent EPS: {recent_eps:.2f}, Average EPS: {total_eps:.2f}")
+    
+    # Print final statistics
+    total_time = time.time() - start_time
+    final_eps = EPISODES / total_time
+    print(f"\nTraining completed in {total_time:.1f} seconds")
+    print(f"Overall average EPS: {final_eps:.2f}")
     
     env.close()
     return policy_net
